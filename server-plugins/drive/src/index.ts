@@ -27,6 +27,8 @@ export const serverDriveId = 'server-drive' as Plugin
  */
 export default plugin(serverDriveId, {
   trigger: {
+    OnFileCreate: '' as Resource<TriggerFunc>,
+    OnFileUpdate: '' as Resource<TriggerFunc>,
     OnFileDelete: '' as Resource<TriggerFunc>
   },
   function: {

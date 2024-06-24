@@ -24,6 +24,22 @@ export { serverDriveId } from '@hcengineering/server-drive'
 
 export function createModel (builder: Builder): void {
   builder.createDoc(serverCore.class.Trigger, core.space.Model, {
+    trigger: serverDrive.trigger.OnFileCreate,
+    txMatch: {
+      _class: core.class.TxCreateDoc,
+      objectClass: drive.class.File
+    }
+  })
+
+  builder.createDoc(serverCore.class.Trigger, core.space.Model, {
+    trigger: serverDrive.trigger.OnFileUpdate,
+    txMatch: {
+      _class: core.class.TxUpdateDoc,
+      objectClass: drive.class.File
+    }
+  })
+
+  builder.createDoc(serverCore.class.Trigger, core.space.Model, {
     trigger: serverDrive.trigger.OnFileDelete,
     txMatch: {
       _class: core.class.TxRemoveDoc,
