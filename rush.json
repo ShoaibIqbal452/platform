@@ -537,6 +537,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@hcengineering/server-thumbnail",
+      "projectFolder": "server/thumbnail",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@hcengineering/login",
       "projectFolder": "plugins/login",
       "shouldPublish": true

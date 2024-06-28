@@ -13,21 +13,19 @@
 // limitations under the License.
 //
 
-import type { Doc, TxOperations } from '@hcengineering/core'
+import { type Class, type Doc, type Ref, type WorkspaceId } from '@hcengineering/core'
+import { type ObjectThumbnail } from '@hcengineering/preview'
+import { type ServiceAdapter } from '@hcengineering/server-core'
 
-import preview from './plugin'
+/** @public */
+export interface ThumbnailServiceAdapter extends ServiceAdapter {
+  generateThumbnail: (workspace: WorkspaceId, thumbnail: ObjectThumbnail) => Promise<void>
+}
 
-export async function requestObjectThumbnail (client: TxOperations, doc: Doc): Promise<void> {
-  const { _id: objectId, _class: objectClass, space } = doc
-
-  const ops = client.apply(objectId)
-  const current = await ops.findOne(preview.class.ObjectThumbnail, { objectId, objectClass })
-
-  if (current !== undefined) {
-    // do nothing
-    // await ops.update(current, { thumbnail: null })
-  } else {
-    await ops.createDoc(preview.class.ObjectThumbnail, space, { objectId, objectClass })
-  }
-  await ops.commit()
+/** @public */
+export interface ThumbnailRecord {
+  workspace: string
+  objectId: Ref<Doc>
+  objectClass: Ref<Class<Doc>>
+  thumbnail: Ref<ObjectThumbnail>
 }

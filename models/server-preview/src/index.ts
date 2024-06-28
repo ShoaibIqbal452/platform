@@ -22,6 +22,14 @@ import serverPreview from '@hcengineering/server-preview'
 export { serverPreviewId } from '@hcengineering/server-preview'
 
 export function createModel (builder: Builder): void {
+  builder.createDoc(serverCore.class.Trigger, core.space.Model, {
+    trigger: serverPreview.trigger.OnObjectThumbnailCreate,
+    txMatch: {
+      _class: core.class.TxCreateDoc,
+      objectClass: preview.class.ObjectThumbnail
+    }
+  })
+
   builder.mixin<Class<Doc>, ObjectDDParticipant>(
     core.class.Doc,
     core.class.Class,

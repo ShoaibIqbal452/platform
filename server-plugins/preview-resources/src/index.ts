@@ -18,11 +18,30 @@ import core, {
   type Doc,
   type Hierarchy,
   type Ref,
+  type Tx,
+  type TxCreateDoc,
   DocumentQuery,
   FindOptions,
-  FindResult
+  FindResult,
+  TxProcessor
 } from '@hcengineering/core'
 import preview, { type ObjectThumbnail } from '@hcengineering/preview'
+import { type TriggerControl } from '@hcengineering/server-core'
+import { type ThumbnailServiceAdapter, serverThumbnailId } from '@hcengineering/server-thumbnail'
+
+/** @public */
+export async function OnObjectThumbnailCreate (tx: Tx, control: TriggerControl): Promise<Tx[]> {
+  const createTx = TxProcessor.extractTx(tx) as TxCreateDoc<ObjectThumbnail>
+  if (createTx._class !== core.class.TxCreateDoc) return []
+
+  const adapter = control.serviceAdaptersManager.getAdapter(serverThumbnailId) as ThumbnailServiceAdapter
+  if (adapter !== undefined) {
+    const thumbnail = TxProcessor.createDoc2Doc(createTx, false)
+    await adapter.generateThumbnail(control.workspace, thumbnail)
+  }
+
+  return []
+}
 
 /** @public */
 export async function ObjectThumbnailRemove (
@@ -61,6 +80,9 @@ export async function ObjectThumbnailBlobRemove (
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default async () => ({
+  trigger: {
+    OnObjectThumbnailCreate
+  },
   function: {
     ObjectThumbnailRemove,
     ObjectThumbnailBlobRemove

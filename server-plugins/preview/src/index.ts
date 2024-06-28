@@ -15,13 +15,16 @@
 
 import type { Plugin, Resource } from '@hcengineering/platform'
 import { plugin } from '@hcengineering/platform'
-import { ObjectDDParticipantFunc } from '@hcengineering/server-core'
+import type { ObjectDDParticipantFunc, TriggerFunc } from '@hcengineering/server-core'
 
 /** @public */
 export const serverPreviewId = 'server-preview' as Plugin
 
 /** @public */
 export default plugin(serverPreviewId, {
+  trigger: {
+    OnObjectThumbnailCreate: '' as Resource<TriggerFunc>
+  },
   function: {
     ObjectThumbnailRemove: '' as Resource<ObjectDDParticipantFunc>,
     ObjectThumbnailBlobRemove: '' as Resource<ObjectDDParticipantFunc>

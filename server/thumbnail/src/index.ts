@@ -13,21 +13,11 @@
 // limitations under the License.
 //
 
-import type { Doc, TxOperations } from '@hcengineering/core'
+export * from './adapter'
+export * from './types'
 
-import preview from './plugin'
+/** @public */
+export const serverThumbnailId = 'server-thumbnail'
 
-export async function requestObjectThumbnail (client: TxOperations, doc: Doc): Promise<void> {
-  const { _id: objectId, _class: objectClass, space } = doc
-
-  const ops = client.apply(objectId)
-  const current = await ops.findOne(preview.class.ObjectThumbnail, { objectId, objectClass })
-
-  if (current !== undefined) {
-    // do nothing
-    // await ops.update(current, { thumbnail: null })
-  } else {
-    await ops.createDoc(preview.class.ObjectThumbnail, space, { objectId, objectClass })
-  }
-  await ops.commit()
-}
+/** @public */
+export const serverThumbnailDb = '%thumbnail'

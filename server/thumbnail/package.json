@@ -1,6 +1,6 @@
 {
-  "name": "@hcengineering/server-preview-resources",
-  "version": "0.6.0",
+  "name": "@hcengineering/server-thumbnail",
+  "version": "0.6.11",
   "main": "lib/index.js",
   "svelte": "src/index.ts",
   "types": "types/index.d.ts",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@hcengineering/platform-rig": "^0.6.0",
+    "@types/node": "~20.11.16",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-promise": "^6.1.1",
@@ -38,10 +39,14 @@
   },
   "dependencies": {
     "@hcengineering/core": "^0.6.32",
+    "@hcengineering/mongo": "^0.6.1",
     "@hcengineering/platform": "^0.6.11",
-    "@hcengineering/server-core": "^0.6.1",
     "@hcengineering/preview": "^0.6.0",
-    "@hcengineering/server-preview": "^0.6.0",
-    "@hcengineering/server-thumbnail": "^0.6.0"
+    "@hcengineering/server-core": "^0.6.1",
+    "mongodb": "^6.3.0"
+  },
+  "repository": "https://github.com/hcengineering/platform",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
