@@ -16,6 +16,7 @@ import { serverInventoryId } from '@hcengineering/server-inventory'
 import { serverLeadId } from '@hcengineering/server-lead'
 import { serverLoveId } from '@hcengineering/server-love'
 import { serverNotificationId } from '@hcengineering/server-notification'
+import { serverPreviewId } from '@hcengineering/server-preview'
 import { serverRecruitId } from '@hcengineering/server-recruit'
 import { serverRequestId } from '@hcengineering/server-request'
 import { serverSettingId } from '@hcengineering/server-setting'
@@ -55,4 +56,5 @@ export function registerServerPlugins (): void {
   addLocation(serverDriveId, () => import('@hcengineering/server-drive-resources'))
   addLocation(serverDocumentsId, () => import('@hcengineering/server-controlled-documents-resources'))
   addLocation(serverTrainingId, () => import('@hcengineering/server-training-resources'))
+  addLocation(serverPreviewId, () => import('@hcengineering/server-preview-resources'))
 }

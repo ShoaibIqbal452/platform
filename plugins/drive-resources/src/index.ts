@@ -31,6 +31,7 @@ import FilePresenter from './components/FilePresenter.svelte'
 import FileSizePresenter from './components/FileSizePresenter.svelte'
 import FolderPanel from './components/FolderPanel.svelte'
 import FolderPresenter from './components/FolderPresenter.svelte'
+import FolderPreview from './components/FolderPreview.svelte'
 import GridView from './components/GridView.svelte'
 import ResourcePresenter from './components/ResourcePresenter.svelte'
 
@@ -108,6 +109,7 @@ export default async (): Promise<Resources> => ({
     FileSizePresenter,
     FolderPanel,
     FolderPresenter,
+    FolderPreview,
     GridView,
     ResourcePresenter
   },

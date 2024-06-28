@@ -30,15 +30,15 @@ import {
   FindResult,
   TxFactory
 } from '@hcengineering/core'
-import drive, { type Drive, type File, type Folder } from '@hcengineering/drive'
+import drive, { type File, type Folder } from '@hcengineering/drive'
 import type { TriggerControl } from '@hcengineering/server-core'
 
 /** @public */
-export async function OnFileCreate (tx: Tx, control: TriggerControl): Promise<Tx[]> {
+export async function OnFileCreate (tx: Tx, { txFactory }: TriggerControl): Promise<Tx[]> {
   const createTx = TxProcessor.extractTx(tx) as TxCreateDoc<File>
 
   if (createTx.attributes.path !== undefined) {
-    const previewTx = generatePreviewTx(updateTx.objectId, updateTx.objectSpace, updateTx.operations.file, txFactory)
+    const previewTx = generatePreviewTx(createTx.objectId, createTx.objectSpace, createTx.attributes.file, txFactory)
     if (previewTx !== undefined) {
       return [previewTx]
     }

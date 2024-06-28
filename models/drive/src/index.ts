@@ -48,6 +48,7 @@ import tracker from '@hcengineering/model-tracker'
 import view, { type Viewlet, createAction } from '@hcengineering/model-view'
 import workbench from '@hcengineering/model-workbench'
 import { getEmbeddedLabel } from '@hcengineering/platform'
+import preview from '@hcengineering/preview'
 
 import drive from './plugin'
 
@@ -360,6 +361,12 @@ function defineFolder (builder: Builder): void {
 
   builder.mixin(drive.class.Folder, core.class.Class, view.mixin.LinkProvider, {
     encode: drive.function.FolderLinkProvider
+  })
+
+  // Preview
+
+  builder.mixin(drive.class.Folder, core.class.Class, preview.mixin.ObjectPreview, {
+    presenter: drive.component.FolderPreview
   })
 
   // Actions

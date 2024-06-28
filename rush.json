@@ -1358,6 +1358,41 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@hcengineering/preview",
+      "projectFolder": "plugins/preview",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@hcengineering/preview-resources",
+      "projectFolder": "plugins/preview-resources",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/preview-assets",
+      "projectFolder": "plugins/preview-assets",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/model-preview",
+      "projectFolder": "models/preview",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/server-preview",
+      "projectFolder": "server-plugins/preview",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/model-server-preview",
+      "projectFolder": "models/server-preview",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/server-preview-resources",
+      "projectFolder": "server-plugins/preview-resources",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@hcengineering/middleware",
       "projectFolder": "server/middleware",
       "shouldPublish": false

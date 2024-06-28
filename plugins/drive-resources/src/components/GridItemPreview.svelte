@@ -15,8 +15,9 @@
 <script lang="ts">
   import { type WithLookup } from '@hcengineering/core'
   import drive, { type Resource } from '@hcengineering/drive'
-  import { getBlobRef, getClient, sizeToWidth } from '@hcengineering/presentation'
-  import { Icon, IconSize } from '@hcengineering/ui'
+  import { getClient } from '@hcengineering/presentation'
+  import preview from '@hcengineering/preview'
+  import { Component, Icon, IconSize } from '@hcengineering/ui'
 
   import IconFolderThumbnail from './icons/FolderThumbnail.svelte'
 
@@ -32,33 +33,17 @@
     return ext.substring(0, 4).toUpperCase()
   }
 
-  let isImage = false
-  let isError = false
-
-  $: previewBlob = object.$lookup?.preview ?? object.$lookup?.file
-  $: previewRef = object.$lookup?.preview !== undefined ? object.preview : object.file
-  $: isImage = previewBlob?.contentType?.startsWith('image/') ?? false
   $: isFolder = hierarchy.isDerived(object._class, drive.class.Folder)
 </script>
 
 {#if isFolder}
   <Icon icon={IconFolderThumbnail} size={'full'} fill={'var(--theme-trans-color)'} />
-{:else if previewBlob != null && previewRef != null && isImage && !isError}
-  {#await getBlobRef(previewBlob, previewRef, object.name, sizeToWidth(size)) then blobSrc}
-    <img
-      class="img-fit"
-      src={blobSrc.src}
-      srcset={blobSrc.srcset}
-      alt={object.name}
-      on:error={() => {
-        isError = true
-      }}
-    />
-  {/await}
 {:else}
-  <div class="flex-center ext-icon">
-    {extensionIconLabel(object.name)}
-  </div>
+  <Component is={preview.component.ObjectPreview} props={{ object, size }}>
+    <div class="flex-center ext-icon">
+      {extensionIconLabel(object.name)}
+    </div>
+  </Component>
 {/if}
 
 <style lang="scss">
@@ -72,11 +57,5 @@
     background-color: var(--primary-button-default);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
-  }
-
-  .img-fit {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
   }
 </style>

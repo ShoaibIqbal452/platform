@@ -18,6 +18,7 @@ import { loginId } from '@hcengineering/login'
 import { loveId } from '@hcengineering/love'
 import { notificationId } from '@hcengineering/notification'
 import { preferenceId } from '@hcengineering/preference'
+import { previewId } from '@hcengineering/preview'
 import { productsId } from '@hcengineering/products'
 import { recruitId } from '@hcengineering/recruit'
 import { requestId } from '@hcengineering/request'
@@ -51,6 +52,7 @@ import leadEn from '@hcengineering/lead-assets/lang/en.json'
 import loveEn from '@hcengineering/love-assets/lang/en.json'
 import notificationEn from '@hcengineering/notification-assets/lang/en.json'
 import preferenceEn from '@hcengineering/preference-assets/lang/en.json'
+import previewEn from '@hcengineering/preview-assets/lang/en.json'
 import productsEn from '@hcengineering/products-assets/lang/en.json'
 import recruitEn from '@hcengineering/recruit-assets/lang/en.json'
 import requestEn from '@hcengineering/request-assets/lang/en.json'
@@ -100,4 +102,5 @@ export function registerStringLoaders (): void {
   addStringsLoader(documentsId, async (lang: string) => documentsEn)
   addStringsLoader(productsId, async (lang: string) => productsEn)
   addStringsLoader(trainingId, async (lang: string) => trainingEn)
+  addStringsLoader(previewId, async (lang: string) => previewEn)
 }

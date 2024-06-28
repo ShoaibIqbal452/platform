@@ -97,6 +97,8 @@
     "@hcengineering/server-controlled-documents-resources": "^0.1.0",
     "@hcengineering/server-training": "^0.1.0",
     "@hcengineering/server-training-resources": "^0.1.0",
+    "@hcengineering/server-preview": "^0.6.0",
+    "@hcengineering/server-preview-resources": "^0.6.0",
     "@hcengineering/middleware": "^0.6.0",
     "@hcengineering/minio": "^0.6.0",
     "@hcengineering/openai": "^0.6.0",
@@ -131,6 +133,7 @@
     "@hcengineering/controlled-documents-assets": "^0.1.0",
     "@hcengineering/products-assets": "^0.1.0",
     "@hcengineering/training-assets": "^0.1.0",
+    "@hcengineering/preview-assets": "^0.6.0",
     "@hcengineering/login": "^0.6.12",
     "@hcengineering/view": "^0.6.13",
     "@hcengineering/task": "^0.6.20",
@@ -166,6 +169,7 @@
     "@hcengineering/server-love-resources": "^0.6.0",
     "@hcengineering/controlled-documents": "^0.1.0",
     "@hcengineering/products": "^0.1.0",
-    "@hcengineering/training": "^0.1.0"
+    "@hcengineering/training": "^0.1.0",
+    "@hcengineering/preview": "^0.6.0"
   }
 }

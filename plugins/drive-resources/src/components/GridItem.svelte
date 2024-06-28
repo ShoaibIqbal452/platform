@@ -21,8 +21,8 @@
   import { createEventDispatcher } from 'svelte'
 
   import FileSizePresenter from './FileSizePresenter.svelte'
+  import GridItemPreview from './GridItemPreview.svelte'
   import ResourcePresenter from './ResourcePresenter.svelte'
-  import Thumbnail from './Thumbnail.svelte'
 
   export let object: WithLookup<Resource>
   export let selected: boolean = false
@@ -55,7 +55,7 @@
     }}
   >
     <div class="card-content">
-      <Thumbnail {object} size={'x-large'} />
+      <GridItemPreview {object} size={'x-large'} />
     </div>
 
     <div class="header flex-col p-2 pt-1">
@@ -80,12 +80,7 @@
 
       <div class="flex-between flex-gap-2 h-4">
         <div class="flex-row-center flex-gap-2 font-regular-12">
-          <ObjectPresenter
-            _class={core.class.Account}
-            objectId={object.createdBy}
-            noUnderline
-            props={{ avatarSize: 'tiny' }}
-          />
+          <ObjectPresenter _class={core.class.Account} objectId={object.createdBy} props={{ avatarSize: 'tiny' }} />
           <span>•</span>
           <span class="flex-no-shrink">
             <TimestampPresenter value={object.$lookup?.file?.modifiedOn ?? object.createdOn ?? object.modifiedOn} />

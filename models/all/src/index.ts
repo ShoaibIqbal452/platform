@@ -32,6 +32,7 @@ import inventory, { inventoryId, createModel as inventoryModel } from '@hcengine
 import lead, { leadId, createModel as leadModel } from '@hcengineering/model-lead'
 import notification, { notificationId, createModel as notificationModel } from '@hcengineering/model-notification'
 import { preferenceId, createModel as preferenceModel } from '@hcengineering/model-preference'
+import { previewId, createModel as previewModel } from '@hcengineering/model-preview'
 import presentation, { presentationId, createModel as presentationModel } from '@hcengineering/model-presentation'
 import recruit, { recruitId, createModel as recruitModel } from '@hcengineering/model-recruit'
 import { requestId, createModel as requestModel } from '@hcengineering/model-request'
@@ -241,6 +242,7 @@ export default function buildModel (enabled: string[] = ['*'], disabled: string[
     [textEditorModel, textEditorId],
     [notificationModel, notificationId],
     [preferenceModel, preferenceId],
+    [previewModel, previewId],
     [
       hrModel,
       hrId,

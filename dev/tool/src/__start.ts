@@ -44,6 +44,7 @@ import { serverTelegramId } from '@hcengineering/server-telegram'
 import { serverTimeId } from '@hcengineering/server-time'
 import { serverTrackerId } from '@hcengineering/server-tracker'
 import { serverViewId } from '@hcengineering/server-view'
+import { serverPreviewId } from '@hcengineering/server-preview'
 
 addLocation(serverActivityId, () => import('@hcengineering/server-activity-resources'))
 addLocation(serverAttachmentId, () => import('@hcengineering/server-attachment-resources'))
@@ -68,6 +69,7 @@ addLocation(serverDocumentId, () => import('@hcengineering/server-document-resou
 addLocation(serverTimeId, () => import('@hcengineering/server-time-resources'))
 addLocation(serverGuestId, () => import('@hcengineering/server-guest-resources'))
 addLocation(serverDriveId, () => import('@hcengineering/server-drive-resources'))
+addLocation(serverPreviewId, () => import('@hcengineering/server-preview-resources'))
 
 function prepareTools (): {
   mongodbUri: string

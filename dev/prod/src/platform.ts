@@ -73,6 +73,7 @@ import '@hcengineering/lead-assets'
 import '@hcengineering/login-assets'
 import '@hcengineering/notification-assets'
 import '@hcengineering/preference-assets'
+import '@hcengineering/preview-assets'
 import '@hcengineering/recruit-assets'
 import '@hcengineering/request-assets'
 import '@hcengineering/setting-assets'
@@ -98,6 +99,7 @@ import textEditor, { textEditorId } from '@hcengineering/text-editor'
 
 import { setMetadata } from '@hcengineering/platform'
 import { preferenceId } from '@hcengineering/preference'
+import { previewId } from '@hcengineering/preview'
 import { setDefaultLanguage } from '@hcengineering/theme'
 import { uiId } from '@hcengineering/ui/src/plugin'
 
@@ -165,6 +167,7 @@ function configureI18n(): void {
    addStringsLoader(loginId, async (lang: string) => await import(`@hcengineering/login-assets/lang/${lang}.json`))
    addStringsLoader(notificationId, async (lang: string) => await import(`@hcengineering/notification-assets/lang/${lang}.json`))
    addStringsLoader(preferenceId, async (lang: string) => await import(`@hcengineering/preference-assets/lang/${lang}.json`))
+   addStringsLoader(previewId, async (lang: string) => await import(`@hcengineering/preview-assets/lang/${lang}.json`))
    addStringsLoader(recruitId, async (lang: string) => await import(`@hcengineering/recruit-assets/lang/${lang}.json`))
    addStringsLoader(requestId, async (lang: string) => await import(`@hcengineering/request-assets/lang/${lang}.json`))
    addStringsLoader(settingId, async (lang: string) => await import(`@hcengineering/setting-assets/lang/${lang}.json`))
@@ -320,6 +323,7 @@ export async function configurePlatform() {
   addLocation(documentsId, () => import(/* webpackChunkName: "documents" */ '@hcengineering/controlled-documents-resources'))
   addLocation(loveId, () => import(/* webpackChunkName: "love" */ '@hcengineering/love-resources'))
   addLocation(printId, () => import(/* webpackChunkName: "print" */ '@hcengineering/print-resources'))
+  addLocation(previewId, () => import(/* webpackChunkName: "preview" */ '@hcengineering/preview-resources'))
 
   setMetadata(client.metadata.FilterModel, true)
   setMetadata(client.metadata.ExtraPlugins, ['preference' as Plugin])
