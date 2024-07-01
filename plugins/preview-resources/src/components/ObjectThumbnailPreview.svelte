@@ -17,7 +17,7 @@
 
 <script lang="ts">
   import core, { type Doc, type WithLookup } from '@hcengineering/core'
-  import { getClient } from '@hcengineering/presentation'
+  import { createQuery } from '@hcengineering/presentation'
   import preview, { type ObjectThumbnail, type PreviewSize } from '@hcengineering/preview'
 
   import ObjectThumbnailPresenter from './ObjectThumbnailPresenter.svelte'
@@ -25,29 +25,28 @@
   export let object: WithLookup<Doc>
   export let size: PreviewSize = 'large'
 
-  const client = getClient()
+  const query = createQuery()
 
   let thumbnail: ObjectThumbnail | undefined
 
-  $: void fetchThumbnail(object)
-
-  async function fetchThumbnail (object: Doc): Promise<void> {
-    thumbnail = await client.findOne(
-      preview.class.ObjectThumbnail,
-      {
-        objectId: object._id,
-        objectClass: object._class
-      },
-      {
-        lookup: {
-          thumbnail: core.class.Blob
-        }
+  $: query.query(
+    preview.class.ObjectThumbnail,
+    {
+      objectId: object._id,
+      objectClass: object._class
+    },
+    (res) => {
+      ;[thumbnail] = res
+    },
+    {
+      lookup: {
+        thumbnail: core.class.Blob
       }
-    )
-  }
+    }
+  )
 </script>
 
-{#if thumbnail}
+{#if thumbnail?.thumbnail }
   <ObjectThumbnailPresenter {object} {size} {thumbnail} />
 {:else}
   <slot />

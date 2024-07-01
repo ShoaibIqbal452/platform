@@ -13,14 +13,8 @@
 // limitations under the License.
 //
 
-// import {} from '@hcengineering/core'
 import { previewId } from '@hcengineering/preview'
 import preview from '@hcengineering/preview-resources/src/plugin'
 import { mergeIds } from '@hcengineering/platform'
-import { type AnyComponent } from '@hcengineering/ui'
 
-export default mergeIds(previewId, preview, {
-  component: {
-    ObjectThumbnailPreview: '' as AnyComponent
-  }
-})
+export default mergeIds(previewId, preview, {})

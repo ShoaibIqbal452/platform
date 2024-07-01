@@ -17,17 +17,16 @@ import type { Doc, TxOperations } from '@hcengineering/core'
 
 import preview from './plugin'
 
+/** @public */
 export async function requestObjectThumbnail (client: TxOperations, doc: Doc): Promise<void> {
   const { _id: objectId, _class: objectClass, space } = doc
 
   const ops = client.apply(objectId)
   const current = await ops.findOne(preview.class.ObjectThumbnail, { objectId, objectClass })
 
-  if (current !== undefined) {
-    // do nothing
-    // await ops.update(current, { thumbnail: null })
-  } else {
+  if (current === undefined) {
     await ops.createDoc(preview.class.ObjectThumbnail, space, { objectId, objectClass })
   }
+
   await ops.commit()
 }

@@ -22,9 +22,5 @@ export default async (): Promise<Resources> => ({
   component: {
     ObjectPreview,
     ObjectThumbnailPreview
-  },
-  function: {
-    // CanPrint: canPrint,
-    // CanConvert: canPrint
   }
 })

@@ -1,5 +1,5 @@
 {
-  "name": "@hcengineering/server-thumbnail",
+  "name": "@hcengineering/thumbnail",
   "version": "0.6.11",
   "main": "lib/index.js",
   "svelte": "src/index.ts",

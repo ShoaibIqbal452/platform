@@ -25,7 +25,6 @@ export interface Drive extends TypedSpace {}
 export interface Resource extends Doc<Drive> {
   name: string
   file?: Ref<Blob>
-  preview?: Ref<Blob>
 
   parent: Ref<Resource>
   path: Ref<Resource>[]

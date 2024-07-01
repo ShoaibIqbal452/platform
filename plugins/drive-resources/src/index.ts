@@ -28,6 +28,7 @@ import EditFile from './components/EditFile.svelte'
 import EditFolder from './components/EditFolder.svelte'
 import FilePanel from './components/FilePanel.svelte'
 import FilePresenter from './components/FilePresenter.svelte'
+import FilePreview from './components/FilePreview.svelte'
 import FileSizePresenter from './components/FileSizePresenter.svelte'
 import FolderPanel from './components/FolderPanel.svelte'
 import FolderPresenter from './components/FolderPresenter.svelte'
@@ -106,6 +107,7 @@ export default async (): Promise<Resources> => ({
     EditFolder,
     FilePanel,
     FilePresenter,
+    FilePreview,
     FileSizePresenter,
     FolderPanel,
     FolderPresenter,

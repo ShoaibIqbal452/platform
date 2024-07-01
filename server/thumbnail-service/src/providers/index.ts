@@ -13,21 +13,10 @@
 // limitations under the License.
 //
 
-import type { Plugin, Resource } from '@hcengineering/platform'
-import { plugin } from '@hcengineering/platform'
-import type { ObjectDDParticipantFunc, TriggerFunc } from '@hcengineering/server-core'
+import { ObjectThumbnailProvider } from '../types'
+import { provider as ImageThumbnailProvider } from './image'
 
 /** @public */
-export const serverPreviewId = 'server-preview' as Plugin
-
-/** @public */
-export default plugin(serverPreviewId, {
-  trigger: {
-    OnObjectCreate: '' as Resource<TriggerFunc>,
-    OnObjectThumbnailCreate: '' as Resource<TriggerFunc>
-  },
-  function: {
-    ObjectThumbnailRemove: '' as Resource<ObjectDDParticipantFunc>,
-    ObjectThumbnailBlobRemove: '' as Resource<ObjectDDParticipantFunc>
-  }
-})
+export const providers: ObjectThumbnailProvider<any>[] = [
+  ImageThumbnailProvider
+]

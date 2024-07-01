@@ -537,8 +537,13 @@
       "shouldPublish": false
     },
     {
-      "packageName": "@hcengineering/server-thumbnail",
+      "packageName": "@hcengineering/thumbnail",
       "projectFolder": "server/thumbnail",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@hcengineering/thumbnail-service",
+      "projectFolder": "server/thumbnail-service",
       "shouldPublish": false
     },
     {

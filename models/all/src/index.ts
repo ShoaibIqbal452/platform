@@ -36,6 +36,7 @@ import { previewId, createModel as previewModel } from '@hcengineering/model-pre
 import presentation, { presentationId, createModel as presentationModel } from '@hcengineering/model-presentation'
 import recruit, { recruitId, createModel as recruitModel } from '@hcengineering/model-recruit'
 import { requestId, createModel as requestModel } from '@hcengineering/model-request'
+import { serverPreviewId, createModel as serverPreviewModel } from '@hcengineering/model-server-preview'
 import { serverActivityId, createModel as serverActivityModel } from '@hcengineering/model-server-activity'
 import { serverAttachmentId, createModel as serverAttachmentModel } from '@hcengineering/model-server-attachment'
 import { serverCalendarId, createModel as serverCalendarModel } from '@hcengineering/model-server-calendar'
@@ -374,6 +375,7 @@ export default function buildModel (enabled: string[] = ['*'], disabled: string[
     ],
 
     [serverCoreModel, serverCoreId],
+    [serverPreviewModel, serverPreviewId],
     [serverAttachmentModel, serverAttachmentId],
     [serverCollaborationModel, serverCollaborationId],
     [serverContactModel, serverContactId],

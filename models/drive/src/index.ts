@@ -30,7 +30,6 @@ import core, {
 import { type Drive, type File, type Folder, type Resource, driveId } from '@hcengineering/drive'
 import {
   type Builder,
-  Hidden,
   Index,
   Mixin,
   Model,
@@ -79,11 +78,6 @@ export class TResource extends TDoc implements Resource {
   @Prop(TypeRef(core.class.Blob), drive.string.File)
   @ReadOnly()
     file?: Ref<Blob>
-
-  @Prop(TypeRef(core.class.Blob), drive.string.Preview)
-  @ReadOnly()
-  @Hidden()
-    preview?: Ref<Blob>
 
   @Prop(TypeRef(drive.class.Resource), drive.string.Parent)
   @Index(IndexKind.Indexed)
@@ -436,6 +430,12 @@ function defineFile (builder: Builder): void {
 
   builder.mixin(drive.class.File, core.class.Class, view.mixin.LinkProvider, {
     encode: drive.function.FileLinkProvider
+  })
+
+  // Preview
+
+  builder.mixin(drive.class.File, core.class.Class, preview.mixin.ObjectPreview, {
+    presenter: drive.component.FilePreview
   })
 
   // Activity

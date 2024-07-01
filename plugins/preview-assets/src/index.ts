@@ -16,5 +16,5 @@
 import { loadMetadata } from '@hcengineering/platform'
 import preview from '@hcengineering/preview'
 
-// const icons = require('../assets/icons.svg') as string // eslint-disable-line
-// loadMetadata(preview.icon, {})
+const icons = require('../assets/icons.svg') as string // eslint-disable-line
+loadMetadata(preview.icon, {})

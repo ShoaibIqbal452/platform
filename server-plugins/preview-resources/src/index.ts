@@ -27,7 +27,31 @@ import core, {
 } from '@hcengineering/core'
 import preview, { type ObjectThumbnail } from '@hcengineering/preview'
 import { type TriggerControl } from '@hcengineering/server-core'
-import { type ThumbnailServiceAdapter, serverThumbnailId } from '@hcengineering/server-thumbnail'
+import { type ThumbnailServiceAdapter, serverThumbnailId } from '@hcengineering/thumbnail'
+
+/** @public */
+export async function OnObjectCreate (tx: Tx, control: TriggerControl): Promise<Tx[]> {
+  const hierarchy = control.hierarchy
+
+  const createTx = TxProcessor.extractTx(tx) as TxCreateDoc<Doc>
+  if (createTx._class !== core.class.TxCreateDoc) return []
+  if (hierarchy.isDerived(createTx.objectClass, preview.class.ObjectThumbnail)) return []
+
+  const mixin = hierarchy.classHierarchyMixin(createTx.objectClass, preview.mixin.ObjectThumbnailPreview)
+  if (mixin !== undefined) {
+    const thumbnailTx = control.txFactory.createTxCreateDoc(
+      preview.class.ObjectThumbnail,
+      createTx.space,
+      {
+        objectId: createTx.objectId,
+        objectClass: createTx.objectClass
+      }
+    )
+    return [thumbnailTx]
+  }
+
+  return []
+}
 
 /** @public */
 export async function OnObjectThumbnailCreate (tx: Tx, control: TriggerControl): Promise<Tx[]> {
@@ -81,6 +105,7 @@ export async function ObjectThumbnailBlobRemove (
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default async () => ({
   trigger: {
+    OnObjectCreate,
     OnObjectThumbnailCreate
   },
   function: {

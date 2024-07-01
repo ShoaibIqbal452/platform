@@ -14,48 +14,15 @@
 -->
 <script lang="ts">
   import { type WithLookup } from '@hcengineering/core'
-  import drive, { type Resource } from '@hcengineering/drive'
-  import { getClient } from '@hcengineering/presentation'
-  import preview from '@hcengineering/preview'
-  import { Component, Icon, IconSize } from '@hcengineering/ui'
-
-  import IconFolderThumbnail from './icons/FolderThumbnail.svelte'
+  import { type Resource } from '@hcengineering/drive'
+  import preview, { type PreviewSize } from '@hcengineering/preview'
+  import { Component } from '@hcengineering/ui'
 
   export let object: WithLookup<Resource>
-  export let size: IconSize = 'x-large'
-
-  const client = getClient()
-  const hierarchy = client.getHierarchy()
-
-  function extensionIconLabel (name: string): string {
-    const parts = name.split('.')
-    const ext = parts[parts.length - 1]
-    return ext.substring(0, 4).toUpperCase()
-  }
-
-  $: isFolder = hierarchy.isDerived(object._class, drive.class.Folder)
+  export let size: PreviewSize = 'large'
 </script>
 
-{#if isFolder}
-  <Icon icon={IconFolderThumbnail} size={'full'} fill={'var(--theme-trans-color)'} />
-{:else}
-  <Component is={preview.component.ObjectPreview} props={{ object, size }}>
-    <div class="flex-center ext-icon">
-      {extensionIconLabel(object.name)}
-    </div>
-  </Component>
-{/if}
-
-<style lang="scss">
-  .ext-icon {
-    flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
-    font-weight: 500;
-    font-size: 0.625rem;
-    color: var(--primary-button-color);
-    background-color: var(--primary-button-default);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-  }
-</style>
+<Component
+  is={preview.component.ObjectPreview}
+  props={{ object, size }}
+/>

@@ -14,7 +14,6 @@
 //
 
 import type { Blob, Class, Doc, Ref } from '@hcengineering/core'
-import { Resource } from '@hcengineering/platform'
 import type { AnyComponent } from '@hcengineering/ui'
 
 /** @public */
@@ -26,17 +25,7 @@ export interface ObjectPreview extends Class<Doc> {
 }
 
 /** @public */
-export type ObjectThumbnailMatchFunc<T extends Doc> = (obj: T) => boolean | Promise<boolean>
-
-/** @public */
-export type ObjectThumbnailFunc<T extends Doc> = (obj: T) => Promise<Ref<Blob>>
-
-/** @public */
-export interface ObjectThumbnailProvider extends Doc {
-  objectClass: Ref<Class<Doc>>
-  provide: Resource<ObjectThumbnailFunc<Doc>>
-  provideIf?: Resource<ObjectThumbnailMatchFunc<Doc>>
-}
+export interface ObjectThumbnailPreview extends Class<Doc> {}
 
 /** @public */
 export interface ObjectThumbnail extends Doc {

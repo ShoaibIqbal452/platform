@@ -22,6 +22,7 @@
   import { Component } from '@hcengineering/ui'
 
   import NoPreview from './NoPreview.svelte'
+  import ObjectThumbnailPreview from './ObjectThumbnailPreview.svelte'
 
   export let object: WithLookup<Doc>
   export let size: PreviewSize = 'large'
@@ -29,20 +30,21 @@
   const client = getClient()
   const hierarchy = client.getHierarchy()
 
-  $: presenter = hierarchy.classHierarchyMixin(object._class, preview.mixin.ObjectPreview)
+  $: objectPreview = hierarchy.classHierarchyMixin(object._class, preview.mixin.ObjectPreview)
+  $: thumbnailPreview = hierarchy.classHierarchyMixin(object._class, preview.mixin.ObjectThumbnailPreview)
 </script>
 
-{#if presenter}
+{#if objectPreview}
   <Component
-    is={presenter.presenter}
+    is={objectPreview.presenter}
     props={{ object, size }}
   >
-    <NoPreview {object} {size}>
-      <slot />
-    </NoPreview>
+    <NoPreview {object} {size}><slot /></NoPreview>
   </Component>
+{:else if thumbnailPreview}
+  <ObjectThumbnailPreview {object} {size}>
+    <NoPreview {object} {size}><slot /></NoPreview>
+  </ObjectThumbnailPreview>
 {:else}
-  <NoPreview {object} {size}>
-    <slot />
-  </NoPreview>
+  <NoPreview {object} {size}><slot /></NoPreview>
 {/if}

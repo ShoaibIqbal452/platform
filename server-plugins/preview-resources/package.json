@@ -42,6 +42,6 @@
     "@hcengineering/server-core": "^0.6.1",
     "@hcengineering/preview": "^0.6.0",
     "@hcengineering/server-preview": "^0.6.0",
-    "@hcengineering/server-thumbnail": "^0.6.0"
+    "@hcengineering/thumbnail": "^0.6.0"
   }
 }

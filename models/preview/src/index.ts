@@ -16,14 +16,7 @@
 import { type Blob, type Class, type Doc, type Domain, type Ref, DOMAIN_MODEL, IndexKind } from '@hcengineering/core'
 import { type Builder, Model, Prop, TypeRef, Index } from '@hcengineering/model'
 import core, { TClass, TDoc } from '@hcengineering/model-core'
-import {
-  type ObjectPreview,
-  type ObjectThumbnail,
-  type ObjectThumbnailFunc,
-  type ObjectThumbnailMatchFunc,
-  type ObjectThumbnailProvider
-} from '@hcengineering/preview'
-import { type Resource } from '@hcengineering/platform'
+import { type ObjectPreview, type ObjectThumbnail, type ObjectThumbnailPreview } from '@hcengineering/preview'
 import { type AnyComponent } from '@hcengineering/ui'
 
 import preview from './plugin'
@@ -38,6 +31,9 @@ export class TObjectPreview extends TClass implements ObjectPreview {
   presenter!: AnyComponent
 }
 
+@Model(preview.mixin.ObjectThumbnailPreview, core.class.Class, DOMAIN_MODEL)
+export class TObjectThumbnailPreview extends TClass implements ObjectThumbnailPreview {}
+
 @Model(preview.class.ObjectThumbnail, core.class.Doc, DOMAIN_PREVIEW)
 export class TObjectThumbnail extends TDoc implements ObjectThumbnail {
   @Prop(TypeRef(core.class.Doc), core.string.Object)
@@ -51,17 +47,8 @@ export class TObjectThumbnail extends TDoc implements ObjectThumbnail {
     thumbnail!: Ref<Blob>
 }
 
-@Model(preview.class.ObjectThumbnailProvider, core.class.Doc, DOMAIN_MODEL)
-export class TObjectThumbnailProvider extends TDoc implements ObjectThumbnailProvider {
-  objectClass!: Ref<Class<Doc>>
-  provide!: Resource<ObjectThumbnailFunc<Doc>>
-  provideIf?: Resource<ObjectThumbnailMatchFunc<Doc>>
-}
-
 export function createModel (builder: Builder): void {
-  builder.createModel(TObjectPreview, TObjectThumbnail, TObjectThumbnailProvider)
+  builder.createModel(TObjectPreview, TObjectThumbnailPreview, TObjectThumbnail)
 
-  builder.mixin(core.class.Blob, core.class.Class, preview.mixin.ObjectPreview, {
-    presenter: preview.component.ObjectThumbnailPreview
-  })
+  builder.mixin(core.class.Blob, core.class.Class, preview.mixin.ObjectThumbnailPreview, {})
 }

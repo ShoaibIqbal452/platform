@@ -43,6 +43,7 @@ export default mergeIds(driveId, drive, {
     FolderPresenter: '' as AnyComponent,
     FolderPreview: '' as AnyComponent,
     FilePresenter: '' as AnyComponent,
+    FilePreview: '' as AnyComponent,
     FileSizePresenter: '' as AnyComponent,
     ResourcePresenter: '' as AnyComponent
   },
@@ -86,7 +87,6 @@ export default mergeIds(driveId, drive, {
     Parent: '' as IntlString,
     Path: '' as IntlString,
     Drives: '' as IntlString,
-    Download: '' as IntlString,
-    Preview: '' as IntlString
+    Download: '' as IntlString
   }
 })

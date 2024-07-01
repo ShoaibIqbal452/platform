@@ -13,11 +13,4 @@
 // limitations under the License.
 //
 
-export * from './adapter'
-export * from './types'
-
-/** @public */
-export const serverThumbnailId = 'thumbnail'
-
-/** @public */
-export const serverThumbnailDb = '%thumbnail'
+export { start } from './start'

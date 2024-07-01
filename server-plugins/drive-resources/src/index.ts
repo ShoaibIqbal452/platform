@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-import {
+import core, {
   type Blob,
   type Class,
   type Doc,
@@ -31,6 +31,7 @@ import {
   TxFactory
 } from '@hcengineering/core'
 import drive, { type File, type Folder } from '@hcengineering/drive'
+import preview, { ObjectThumbnail } from '@hcengineering/preview'
 import type { TriggerControl } from '@hcengineering/server-core'
 
 /** @public */
@@ -38,7 +39,7 @@ export async function OnFileCreate (tx: Tx, { txFactory }: TriggerControl): Prom
   const createTx = TxProcessor.extractTx(tx) as TxCreateDoc<File>
 
   if (createTx.attributes.path !== undefined) {
-    const previewTx = generatePreviewTx(createTx.objectId, createTx.objectSpace, createTx.attributes.file, txFactory)
+    const previewTx = createThumbnailTx(createTx.objectId, createTx.objectSpace, createTx.attributes.file, txFactory)
     if (previewTx !== undefined) {
       return [previewTx]
     }
@@ -48,11 +49,13 @@ export async function OnFileCreate (tx: Tx, { txFactory }: TriggerControl): Prom
 }
 
 /** @public */
-export async function OnFileUpdate (tx: Tx, { txFactory }: TriggerControl): Promise<Tx[]> {
+export async function OnFileUpdate (tx: Tx, { findAll, txFactory }: TriggerControl): Promise<Tx[]> {
   const updateTx = TxProcessor.extractTx(tx) as TxUpdateDoc<File>
 
   if (updateTx.operations.file !== undefined) {
-    const previewTx = generatePreviewTx(updateTx.objectId, updateTx.objectSpace, updateTx.operations.file, txFactory)
+    // TODO delete existing thumbnail
+
+    const previewTx = createThumbnailTx(updateTx.objectId, updateTx.objectSpace, updateTx.operations.file, txFactory)
     if (previewTx !== undefined) {
       return [previewTx]
     }
@@ -64,26 +67,37 @@ export async function OnFileUpdate (tx: Tx, { txFactory }: TriggerControl): Prom
 /** @public */
 export async function OnFileDelete (
   tx: Tx,
-  { removedMap, ctx, storageAdapter, workspace }: TriggerControl
+  { ctx, findAll, removedMap, storageAdapter, workspace, txFactory }: TriggerControl
 ): Promise<Tx[]> {
   const rmTx = TxProcessor.extractTx(tx) as TxRemoveDoc<File>
+
+  const txes = []
 
   // Remove blobs for removed files
   const attach = removedMap.get(rmTx.objectId) as File
   if (attach !== undefined) {
+    const thumbnails = await findAll(preview.class.ObjectThumbnail, {
+      objectClass: core.class.Blob,
+      objectId: attach.file
+    })
+    for (const thumbnail of thumbnails) {
+      if (!removedMap.has(thumbnail._id)) {
+        txes.push(removeThumbnailTx(thumbnail.space, thumbnail._id, txFactory))
+      }
+    }
+
     const toRemove = []
+
     if (attach.file !== undefined) {
       toRemove.push(attach.file)
     }
-    if (attach.preview !== undefined) {
-      toRemove.push(attach.preview)
-    }
+
     if (toRemove.length > 0) {
       await storageAdapter.remove(ctx, workspace, toRemove)
     }
   }
 
-  return []
+  return txes
 }
 
 /**
@@ -105,19 +119,28 @@ export async function FindFolderResources (
   return [...files, ...folders]
 }
 
-function generatePreviewTx (
+function createThumbnailTx (
   _id: Ref<File>,
   space: Ref<Space>,
   file: Ref<Blob>,
   txFactory: TxFactory
 ): Tx {
-  // TODO trigger preview generation
-  return txFactory.createTxUpdateDoc(
-    drive.class.File,
+  return txFactory.createTxCreateDoc(
+    preview.class.ObjectThumbnail,
     space,
-    _id,
-    { preview: file }
+    {
+      objectId: file,
+      objectClass: core.class.Blob
+    }
   )
+}
+
+function removeThumbnailTx (
+  space: Ref<Space>,
+  thumbnail: Ref<ObjectThumbnail>,
+  txFactory: TxFactory
+): Tx {
+  return txFactory.createTxRemoveDoc(preview.class.ObjectThumbnail, space, thumbnail)
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
