@@ -34,21 +34,20 @@ export function createModel (builder: Builder): void {
     }
   })
 
+  builder.createDoc(serverCore.class.Trigger, core.space.Model, {
+    trigger: serverPreview.trigger.OnObjectThumbnailRemove,
+    txMatch: {
+      _class: core.class.TxRemoveDoc,
+      objectClass: preview.class.ObjectThumbnail
+    }
+  })
+
   builder.mixin<Class<Doc>, ObjectDDParticipant>(
     core.class.Doc,
     core.class.Class,
     serverCore.mixin.ObjectDDParticipant,
     {
       collectDocs: serverPreview.function.ObjectThumbnailRemove
-    }
-  )
-
-  builder.mixin<Class<Doc>, ObjectDDParticipant>(
-    preview.class.ObjectThumbnail,
-    core.class.Class,
-    serverCore.mixin.ObjectDDParticipant,
-    {
-      collectDocs: serverPreview.function.ObjectThumbnailBlobRemove
     }
   )
 }

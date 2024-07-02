@@ -13,16 +13,4 @@
 // limitations under the License.
 //
 
-import { ObjectThumbnailProvider } from '../types'
-import { provider as GifThumbnailProvider } from './gif'
-import { provider as ImageThumbnailProvider } from './image'
-import { provider as PdfThumbnailProvider } from './pdf'
-import { provider as VideoThumbnailProvider } from './video'
-
-/** @public */
-export const providers: ObjectThumbnailProvider<any>[] = [
-  GifThumbnailProvider,
-  ImageThumbnailProvider,
-  PdfThumbnailProvider,
-  VideoThumbnailProvider
-]
+export * from '@hcengineering/thumbnail-service'

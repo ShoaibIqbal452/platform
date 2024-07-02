@@ -20,7 +20,7 @@ import type { StorageAdapter } from '@hcengineering/server-core'
 import type { ThumbnailRecord } from '@hcengineering/thumbnail'
 
 import { WorkspaceClientPool } from './platform'
-import { ObjectThumbnailProvider } from './types'
+import type { ObjectThumbnailFuncParams, ObjectThumbnailProvider } from './types'
 
 /** @public */
 export class Worker {
@@ -28,7 +28,8 @@ export class Worker {
 
   constructor (
     private readonly storageAdapter: StorageAdapter,
-    private readonly providers: ObjectThumbnailProvider[]
+    private readonly providers: ObjectThumbnailProvider[],
+    private readonly params: ObjectThumbnailFuncParams
   ) {
     this.clients = new WorkspaceClientPool()
   }
@@ -62,7 +63,7 @@ export class Worker {
 
     // found a provider, generate blob
     const blob = await ctx.with('provide', {}, async (ctx) => {
-      return await provider.provide(ctx, ops, this.storageAdapter, object, {})
+      return await provider.provide(ctx, ops, this.storageAdapter, workspaceId, object, this.params)
     })
 
     await ops.updateDoc(

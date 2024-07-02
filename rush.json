@@ -852,6 +852,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@hcengineering/pod-thumbnail",
+      "projectFolder": "pods/thumbnail",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@hcengineering/panel",
       "projectFolder": "packages/panel",
       "shouldPublish": true

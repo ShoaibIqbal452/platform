@@ -13,16 +13,9 @@
 // limitations under the License.
 //
 
-import { ObjectThumbnailProvider } from '../types'
-import { provider as GifThumbnailProvider } from './gif'
-import { provider as ImageThumbnailProvider } from './image'
-import { provider as PdfThumbnailProvider } from './pdf'
-import { provider as VideoThumbnailProvider } from './video'
+import { MeasureMetricsContext, metricsToString, newMetrics } from '@hcengineering/core'
+import { start } from '@hcengineering/thumbnail-service'
 
-/** @public */
-export const providers: ObjectThumbnailProvider<any>[] = [
-  GifThumbnailProvider,
-  ImageThumbnailProvider,
-  PdfThumbnailProvider,
-  VideoThumbnailProvider
-]
+const ctx = new MeasureMetricsContext('thumbnail', {}, {}, newMetrics())
+
+void start(ctx)

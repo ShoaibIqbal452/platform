@@ -13,21 +13,29 @@
 // limitations under the License.
 //
 
-import type { Plugin, Resource } from '@hcengineering/platform'
-import { plugin } from '@hcengineering/platform'
-import type { ObjectDDParticipantFunc, TriggerFunc } from '@hcengineering/server-core'
+import gm from 'gm'
+
+const gmtool = gm.subClass({ imageMagick: false })
 
 /** @public */
-export const serverPreviewId = 'server-preview' as Plugin
+export async function gmToBuffer (state: gm.State, format: string): Promise<Buffer> {
+  return await new Promise((resolve, reject) => {
+    state.toBuffer(format, (err, buffer) => {
+      if (err != null) {
+        reject(err)
+      }
+      resolve(buffer)
+    })
+  })
+}
 
 /** @public */
-export default plugin(serverPreviewId, {
-  trigger: {
-    OnObjectCreate: '' as Resource<TriggerFunc>,
-    OnObjectThumbnailCreate: '' as Resource<TriggerFunc>,
-    OnObjectThumbnailRemove: '' as Resource<TriggerFunc>
-  },
-  function: {
-    ObjectThumbnailRemove: '' as Resource<ObjectDDParticipantFunc>
-  }
-})
+export function gmPipeline (
+  stream: NodeJS.ReadableStream | Buffer,
+  params: { width: number, height: number, format: string }
+): gm.State {
+  return gmtool(stream)
+    .resize(params.width, undefined, '>')
+    .crop(params.width, params.height)
+    .gravity('NorthWest')
+}

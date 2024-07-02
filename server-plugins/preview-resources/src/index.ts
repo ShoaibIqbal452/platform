@@ -23,7 +23,8 @@ import core, {
   DocumentQuery,
   FindOptions,
   FindResult,
-  TxProcessor
+  TxProcessor,
+  TxRemoveDoc
 } from '@hcengineering/core'
 import preview, { type ObjectThumbnail } from '@hcengineering/preview'
 import { type TriggerControl } from '@hcengineering/server-core'
@@ -68,6 +69,19 @@ export async function OnObjectThumbnailCreate (tx: Tx, control: TriggerControl):
 }
 
 /** @public */
+export async function OnObjectThumbnailRemove (tx: Tx, control: TriggerControl): Promise<Tx[]> {
+  const removeTx = TxProcessor.extractTx(tx) as TxRemoveDoc<ObjectThumbnail>
+  if (removeTx._class !== core.class.TxRemoveDoc) return []
+
+  const thumbnail = control.removedMap.get(removeTx.objectId) as ObjectThumbnail
+  if (thumbnail?.thumbnail != null) {
+    await control.storageAdapter.remove(control.ctx, control.workspace, [thumbnail.thumbnail])
+  }
+
+  return []
+}
+
+/** @public */
 export async function ObjectThumbnailRemove (
   doc: Doc,
   hiearachy: Hierarchy,
@@ -82,34 +96,14 @@ export async function ObjectThumbnailRemove (
   return await findAll(preview.class.ObjectThumbnail, { objectId: doc._id, objectClass: doc._class })
 }
 
-/** @public */
-export async function ObjectThumbnailBlobRemove (
-  doc: Doc,
-  hiearachy: Hierarchy,
-  findAll: <T extends Doc>(
-    clazz: Ref<Class<T>>,
-    query: DocumentQuery<T>,
-    options?: FindOptions<T>
-  ) => Promise<FindResult<T>>
-): Promise<Doc[]> {
-  if (hiearachy.isDerived(doc._class, preview.class.ObjectThumbnail)) {
-    const blob = (doc as ObjectThumbnail).thumbnail
-    if (blob != null) {
-      return await findAll(core.class.Blob, { _id: blob })
-    }
-  }
-
-  return []
-}
-
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default async () => ({
   trigger: {
     OnObjectCreate,
-    OnObjectThumbnailCreate
+    OnObjectThumbnailCreate,
+    OnObjectThumbnailRemove
   },
   function: {
-    ObjectThumbnailRemove,
-    ObjectThumbnailBlobRemove
+    ObjectThumbnailRemove
   }
 })

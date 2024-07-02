@@ -19,7 +19,7 @@ import type { ThumbnailRecord } from '@hcengineering/thumbnail'
 import type { Db, Collection } from 'mongodb'
 
 import type { Config } from './config'
-import { ObjectThumbnailProvider } from './types'
+import type { ObjectThumbnailFuncParams, ObjectThumbnailProvider } from './types'
 import { Worker } from './worker'
 
 /** @public */
@@ -34,13 +34,14 @@ export class Controller {
 
   constructor (
     private readonly ctx: MeasureContext,
-    private readonly config: Config,
-    private readonly storageAdapter: StorageAdapter,
-    private readonly providers: ObjectThumbnailProvider[],
-    private readonly db: Db
+    config: Config,
+    storageAdapter: StorageAdapter,
+    db: Db,
+    providers: ObjectThumbnailProvider[],
+    params: ObjectThumbnailFuncParams
   ) {
     this.collection = db.collection<ThumbnailRecord>('thumbnails')
-    this.worker = new Worker(storageAdapter, providers)
+    this.worker = new Worker(storageAdapter, providers, params)
   }
 
   async start (): Promise<void> {
@@ -49,7 +50,7 @@ export class Controller {
     if (this.running === undefined) {
       ctx.info('starting thumbnail controller')
       this.stopped = false
-      this.running = this.processThumbnails()
+      this.running = this.processLoop()
     }
   }
 
@@ -61,33 +62,28 @@ export class Controller {
     }
   }
 
-  private async processThumbnails (): Promise<void> {
+  private async processLoop (): Promise<void> {
     const ctx = this.ctx
 
     while (!this.stopped) {
       const thumbnail = await this.collection.findOne()
 
       if (thumbnail != null) {
+        const { _id, objectClass, workspace } = thumbnail
+
         try {
-          await ctx.with('process-thumbnail', {}, async (ctx) => {
-            await this.processThumbnail(ctx, thumbnail)
+          ctx.info('process-thumbnail', { objectClass, workspace })
+          await ctx.with('process-thumbnail', { objectClass, workspace }, async (ctx) => {
+            await this.worker.processThumbnailRecord(ctx, thumbnail)
           })
+        } catch (err) {
+          ctx.error('process-thumbnail error', { err, objectClass, workspace })
         } finally {
-          await this.collection.deleteOne({ _id: thumbnail._id })
+          await this.collection.deleteOne({ _id })
         }
       } else {
         await new Promise((resolve) => setTimeout(resolve, 500))
       }
-    }
-  }
-
-  private async processThumbnail (ctx: MeasureContext, thumbnail: ThumbnailRecord): Promise<void> {
-    try {
-      await ctx.with('process-thumbnail', {}, async (ctx) => {
-        await this.worker.processThumbnailRecord(ctx, thumbnail)
-      })
-    } catch (err) {
-      ctx.error('failed to process thumbnail', { err, objectClass: thumbnail.objectClass })
     }
   }
 }

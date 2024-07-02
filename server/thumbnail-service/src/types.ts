@@ -13,13 +13,14 @@
 // limitations under the License.
 //
 
-import type { Blob, Class, Doc, MeasureContext, Ref, TxOperations } from '@hcengineering/core'
-import type { PreviewSize } from '@hcengineering/preview'
+import type { Blob, Class, Doc, MeasureContext, Ref, TxOperations, WorkspaceId } from '@hcengineering/core'
 import type { StorageAdapter } from '@hcengineering/server-core'
 
 /** @public */
 export interface ObjectThumbnailFuncParams {
-  size?: PreviewSize
+  width: number
+  height: number
+  format: 'jpeg' | 'png'
 }
 
 /** @public */
@@ -27,7 +28,9 @@ export type ObjectThumbnailFunc<T extends Doc> = (
   ctx: MeasureContext,
   client: TxOperations,
   storageAdapter: StorageAdapter,
-  obj: T, params: ObjectThumbnailFuncParams
+  workspaceId: WorkspaceId,
+  obj: T,
+  params: ObjectThumbnailFuncParams
 ) => Promise<Ref<Blob>>
 
 /** @public */

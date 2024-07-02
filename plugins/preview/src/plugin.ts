@@ -17,7 +17,7 @@ import type { Class, Mixin, Ref } from '@hcengineering/core'
 import type { Plugin } from '@hcengineering/platform'
 import { plugin } from '@hcengineering/platform'
 import type { AnyComponent } from '@hcengineering/ui'
-import type { ObjectPreview, ObjectThumbnail, ObjectThumbnailPreview, ObjectThumbnailProvider } from './types'
+import type { ObjectPreview, ObjectThumbnail, ObjectThumbnailPreview } from './types'
 
 export * from './types'
 
@@ -30,8 +30,7 @@ export const previewPlugin = plugin(previewId, {
     ObjectThumbnailPreview: '' as AnyComponent
   },
   class: {
-    ObjectThumbnail: '' as Ref<Class<ObjectThumbnail>>,
-    ObjectThumbnailProvider: '' as Ref<Class<ObjectThumbnailProvider>>
+    ObjectThumbnail: '' as Ref<Class<ObjectThumbnail>>
   },
   icon: {},
   mixin: {

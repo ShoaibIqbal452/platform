@@ -22,9 +22,12 @@ import serverToken from '@hcengineering/server-token'
 import config from './config'
 import { Controller } from './controller'
 import { providers } from './providers'
+import type { ObjectThumbnailFuncParams } from './types'
 
 export const start = async (ctx: MeasureContext, onClose?: () => void): Promise<void> => {
   setMetadata(serverToken.metadata.Secret, config.ServerSecret)
+
+  const params: ObjectThumbnailFuncParams = { width: 1024, height: 1024, format: 'png' }
 
   const storageConfiguration = storageConfigFromEnv()
   const storageAdapter = buildStorageFromConfig(storageConfiguration, config.MongoURL)
@@ -34,7 +37,7 @@ export const start = async (ctx: MeasureContext, onClose?: () => void): Promise<
 
   const db = mongoClient.db(config.ConfigurationDB)
 
-  const controller = new Controller(ctx, config, storageAdapter, providers, db)
+  const controller = new Controller(ctx, config, storageAdapter, db, providers, params)
 
   await controller.start()
 

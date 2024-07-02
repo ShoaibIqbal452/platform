@@ -47,7 +47,11 @@
 </script>
 
 {#if thumbnail?.thumbnail }
-  <ObjectThumbnailPresenter {object} {size} {thumbnail} />
+  {#key thumbnail?.thumbnail}
+    <ObjectThumbnailPresenter {object} {size} {thumbnail}>
+      <slot />
+    </ObjectThumbnailPresenter>
+  {/key}
 {:else}
   <slot />
 {/if}

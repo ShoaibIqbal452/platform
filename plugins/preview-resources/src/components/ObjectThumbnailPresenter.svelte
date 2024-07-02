@@ -20,11 +20,11 @@
   import { getBlobRef, sizeToWidth } from '@hcengineering/presentation'
   import { ObjectThumbnail, type PreviewSize } from '@hcengineering/preview'
 
-  import preview from '../plugin'
-
   export let object: WithLookup<Doc>
   export let size: PreviewSize = 'large'
   export let thumbnail: WithLookup<ObjectThumbnail>
+
+  let loading = true
 
   $: blob = thumbnail.$lookup?.thumbnail
   $: blobRef = thumbnail.thumbnail
@@ -34,10 +34,22 @@
   {#await getBlobRef(blob, blobRef, undefined, sizeToWidth(size)) then blobSrc}
     <img
       class="img-fit"
+      class:loading
       src={blobSrc.src}
       srcset={blobSrc.srcset}
-      alt={preview.string.Preview}
+      alt={'preview'}
+      on:loadstart={() => {
+        loading = true
+      }}
+      on:load={() => {
+        loading = false
+      }}
     />
+    {#if loading}
+      <div class="absolute flex-center">
+        <slot />
+      </div>
+    {/if}
   {/await}
 {/if}
 
@@ -46,5 +58,9 @@
     object-fit: cover;
     height: 100%;
     width: 100%;
+
+    &.loading {
+      opacity: 0;
+    }
   }
 </style>

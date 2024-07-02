@@ -13,31 +13,59 @@
 // limitations under the License.
 //
 
-import core, { type Blob, type MeasureContext, type Ref, type TxOperations, type WorkspaceId } from '@hcengineering/core'
+import core, {
+  generateId,
+  type Blob,
+  type MeasureContext,
+  type Ref,
+  type TxOperations,
+  type WorkspaceId
+} from '@hcengineering/core'
 import { type StorageAdapter } from '@hcengineering/server-core'
 
 import { type ObjectThumbnailFuncParams, type ObjectThumbnailProvider } from '../types'
 import { withContext } from '../utils'
+import { gmPipeline, gmToBuffer } from './utils'
 
 /** @public */
 export const provider: ObjectThumbnailProvider<Blob> = {
   objectClass: core.class.Blob,
   provideIf,
-  provide: withContext('image/*', provide)
+  provide: withContext('image/gif', provide)
 }
 
 function provideIf (ctx: MeasureContext, obj: Blob): boolean | Promise<boolean> {
-  return obj.contentType.startsWith('image/')
+  return obj.contentType.includes('image/gif')
 }
 
 async function provide (
   ctx: MeasureContext,
   client: TxOperations,
   storageAdapter: StorageAdapter,
-  workspace: WorkspaceId,
+  workspaceId: WorkspaceId,
   obj: Blob,
   params: ObjectThumbnailFuncParams
 ): Promise<Ref<Blob>> {
-  // do nothing, just return the same blob
-  return obj._id
+  const readable = await ctx.with('read-blob', {}, async (ctx) => {
+    return await storageAdapter.get(ctx, workspaceId, obj.storageId)
+  })
+
+  const pipeline = gmPipeline(readable, params)
+    .selectFrame(0)
+
+  const buffer = await gmToBuffer(pipeline, params.format)
+
+  const previewId = `preview-${generateId()}` as Ref<Blob>
+  await ctx.with('', {}, async (ctx) => {
+    await storageAdapter.put(
+      ctx,
+      workspaceId,
+      previewId,
+      buffer,
+      `image/${params.format}`,
+      buffer.length
+    )
+  })
+
+  return previewId
 }
