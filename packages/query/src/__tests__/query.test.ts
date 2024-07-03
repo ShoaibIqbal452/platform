@@ -413,8 +413,8 @@ describe('query', () => {
               expect(comment.$lookup?.space?._id).toEqual(futureSpace._id)
               resolve(null)
             } else {
-              expect(comment.$lookup?.space).toBeUndefined()
               attempt++
+              expect(comment.$lookup?.space).toBeUndefined()
             }
           }
         },
@@ -578,8 +578,8 @@ describe('query', () => {
               expect(comment.$lookup?.space).toBeUndefined()
               resolve(null)
             } else {
-              expect((comment.$lookup?.space as Doc)?._id).toEqual(futureSpace)
               attempt++
+              expect((comment.$lookup?.space as Doc)?._id).toEqual(futureSpace)
             }
           }
         },
@@ -630,14 +630,8 @@ describe('query', () => {
           attempt++
           const comment = result[0]
           if (comment !== undefined) {
-            if (attempt > 0) {
-              expect((comment.$lookup?.attachedTo as WithLookup<AttachedComment>)?.$lookup?.space).toBeUndefined()
-              resolve(null)
-            } else {
-              expect(
-                ((comment.$lookup?.attachedTo as WithLookup<AttachedComment>)?.$lookup?.space as Doc)?._id
-              ).toEqual(futureSpace)
-            }
+            expect((comment.$lookup?.attachedTo as WithLookup<AttachedComment>)?.$lookup?.space).toBeUndefined()
+            resolve(null)
           }
         },
         { lookup: { attachedTo: [test.class.TestComment, { space: core.class.Space }] } }
