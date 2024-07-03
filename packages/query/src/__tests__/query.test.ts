@@ -621,13 +621,11 @@ describe('query', () => {
         message: 'child'
       }
     )
-    let attempt = -1
     const pp = new Promise((resolve) => {
       liveQuery.query<AttachedComment>(
         test.class.TestComment,
         { _id: childComment },
         (result) => {
-          attempt++
           const comment = result[0]
           if (comment !== undefined) {
             expect((comment.$lookup?.attachedTo as WithLookup<AttachedComment>)?.$lookup?.space).toBeUndefined()
