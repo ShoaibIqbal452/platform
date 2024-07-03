@@ -153,11 +153,6 @@ class ClientImpl implements AccountClient, BackupClient, MeasureClient {
   }
 
   async tx (tx: Tx): Promise<TxResult> {
-    if (tx.objectSpace === core.space.Model) {
-      this.hierarchy.tx(tx)
-      await this.model.tx(tx)
-    }
-
     // We need to handle it on server, before performing local live query updates.
     const result = await this.conn.tx(tx)
     return result
