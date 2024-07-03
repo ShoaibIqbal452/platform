@@ -57,6 +57,7 @@
     "@hcengineering/server-pipeline": "^0.6.0",
     "@hcengineering/contact": "^0.6.24",
     "@hcengineering/notification": "^0.6.23",
-    "@hcengineering/server-notification": "^0.6.1"
+    "@hcengineering/server-notification": "^0.6.1",
+    "@hcengineering/server-thumbnail": "^0.6.0"
   }
 }

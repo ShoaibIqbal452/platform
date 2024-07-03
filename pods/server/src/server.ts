@@ -22,6 +22,7 @@ import { type Token } from '@hcengineering/server-token'
 import { ClientSession, start as startJsonRpc, type ServerFactory, type Session } from '@hcengineering/server-ws'
 
 import { createServerPipeline, registerServerPlugins, registerStringLoaders } from '@hcengineering/server-pipeline'
+import { createThumbnailAdapter, serverThumbnailDb, serverThumbnailId } from '@hcengineering/server-thumbnail'
 
 registerStringLoaders()
 
@@ -53,7 +54,20 @@ export function start (
 
   const externalStorage = buildStorageFromConfig(opt.storageConfig, dbUrl)
 
-  const pipelineFactory = createServerPipeline(metrics, dbUrl, { ...opt, externalStorage })
+  const pipelineFactory = createServerPipeline(
+    metrics,
+    dbUrl,
+    { ...opt, externalStorage },
+    {
+      serviceAdapters: {
+        [serverThumbnailId]: {
+          factory: createThumbnailAdapter,
+          db: serverThumbnailDb,
+          url: dbUrl
+        }
+      }
+    }
+  )
   const sessionFactory = (token: Token, pipeline: Pipeline): Session => {
     if (token.extra?.mode === 'backup') {
       return new BackupClientSession(token, pipeline)
